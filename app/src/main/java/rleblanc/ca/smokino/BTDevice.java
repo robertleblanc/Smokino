@@ -15,7 +15,7 @@ import java.util.UUID;
  */
 public class BTDevice {
 
-    public final String TAG = "BlueTest2-BTCONN";
+    public final String TAG = "BTDevice: ";
     private BluetoothSocket mSocket;
     private InputStream mInStream;
     private OutputStream mOutStream;
@@ -34,7 +34,7 @@ public class BTDevice {
             //mSocket = mDevice.createRfcomSocketToServiceRecord(mUUID);
             mSocket = mDevice.createInsecureRfcommSocketToServiceRecord(mUUID);
         } catch (IOException e) {
-            Log.e("BTDevice connect(): ", "Error creating Socket");
+            Log.e(TAG, "Error creating Socket in connect()");
             return;
         }
 
@@ -48,7 +48,7 @@ public class BTDevice {
 
         } catch (IOException connectException) {
             // Unable to connect; close the socket and get out
-            Log.e("BTDevice connect(): ", "Error connecting through socket");
+            Log.e(TAG, "Error connecting through socket in connect()");
             disconnect();
             return;
         }
@@ -57,7 +57,7 @@ public class BTDevice {
             mInStream = mSocket.getInputStream();
             mOutStream = mSocket.getOutputStream();
         } catch (IOException e) {
-            Log.e("connect(): ", "Error getting outputstream or inputstream");
+            Log.e(TAG, "Error getting outputstream or inputstream in connect()");
         }
     }
 
@@ -66,7 +66,7 @@ public class BTDevice {
             try {
                 mInStream.close();
             } catch (Exception e) {
-                Log.e("disconnect(): ", "Error closing inputstream");
+                Log.e(TAG, "Error closing inputstream in disconnect()");
             }
 
             mInStream = null;
@@ -76,7 +76,7 @@ public class BTDevice {
             try {
                 mOutStream.close();
             } catch (Exception e) {
-                Log.e("disconnect(): ", "Error closing outputstream");
+                Log.e(TAG, "Error closing outputstream in disconnect");
             }
 
             mOutStream = null;
@@ -86,7 +86,7 @@ public class BTDevice {
             try {
                 mSocket.close();
             } catch (Exception e) {
-                Log.e("disconnect(): ", "Error closing socket");
+                Log.e(TAG, "Error closing socket in disconnect()");
             }
             mSocket = null;
         }
@@ -96,7 +96,7 @@ public class BTDevice {
         try {
             mOutStream.write(msg.getBytes());
         } catch (IOException e) {
-            Log.e("WriteToDevice: ", "Error writing to outputstream");
+            Log.e(TAG, "Error writing to outputstream in writeToDevice");
             disconnect();
         }
     }
@@ -107,7 +107,7 @@ public class BTDevice {
         try {
             return mInStream.available();
         } catch (IOException e) {
-            Log.e(TAG, "Error getting available bytes from inputstream");
+            Log.e(TAG, "Error getting available bytes from inputstream in available()");
             return 0;
         }
 
@@ -120,7 +120,7 @@ public class BTDevice {
         try {
             input_byte = mInStream.read(bytes);
         } catch (IOException e) {
-            Log.e(TAG, "Error reading bytes from inputstream");
+            Log.e(TAG, "Error reading bytes from inputstream in read()");
             disconnect();
         }
 
