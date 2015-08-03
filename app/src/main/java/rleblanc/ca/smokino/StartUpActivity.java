@@ -49,5 +49,6 @@ public class StartUpActivity extends Activity {
 
     private void startSmokinoGUI() {
         startActivity(new Intent(this, SmokinoGUI.class));
+        finish();
     }
 }

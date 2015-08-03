@@ -11,11 +11,11 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 /**
- * Robert LeBlanc - Aug 1, 2015 - Smokino App - BTDevice.java.
+ * Robert LeBlanc - Aug 1, 2015 - Smokino App - BTDeviceManager.java.
  */
-public class BTDevice {
+public class BTDeviceManager {
 
-    public final String TAG = "BTDevice: ";
+    public final String TAG = "BTDeviceManager: ";
     private BluetoothSocket mSocket;
     private InputStream mInStream;
     private OutputStream mOutStream;
@@ -23,7 +23,7 @@ public class BTDevice {
     private UUID mUUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
 
-    public BTDevice(BluetoothDevice _device) {
+    public BTDeviceManager(BluetoothDevice _device) {
         mDevice = _device;
     }
 
