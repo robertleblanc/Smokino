@@ -48,7 +48,12 @@ public class StartUpActivity extends Activity {
     }
 
     private void startSmokinoGUI() {
-        startActivity(new Intent(this, SmokinoGUI.class));
+
+        //This could be executed after the GUI has launched... check to see if it had already launched first
+        SmokinoGUI smokinoGUI = ((SmokinoApp) getApplicationContext()).getSmokinoGUI();
+        if (smokinoGUI == null)
+            startActivity(new Intent(this, SmokinoGUI.class));
+
         finish();
     }
 }

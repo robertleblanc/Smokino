@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
@@ -26,9 +27,17 @@ public class ConnectButtonListener implements View.OnClickListener {
 
     @Override
     public void onClick(View _v) {
+
         //v is used to get the activity context and applicationContext
         v = _v;
-        buildDeviceDialog();
+
+        if (BluetoothAdapter.getDefaultAdapter().isEnabled()) {
+            buildDeviceDialog();
+        }
+
+        //This will double check to see if bluetooth is still enabled and will reprompt if it isn't.
+        //ToDo: Probably throw something like this in a receiver for bluetooth status change
+        v.getContext().startActivity(new Intent(v.getContext(), StartUpActivity.class));
     }
 
 
