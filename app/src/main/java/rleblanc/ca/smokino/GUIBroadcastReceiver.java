@@ -20,11 +20,16 @@ public class GUIBroadcastReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
             if (smokinoGUI != null)
                 smokinoGUI.indicateBTConnection();
+
+            ((SmokinoApp) context.getApplicationContext()).startRequesting();
+
         }
 
         if (intent.getAction().equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
             if (smokinoGUI != null)
                 smokinoGUI.indicateBTDisconnection();
+
+            ((SmokinoApp) context.getApplicationContext()).stopRequesting();
         }
     }
 }

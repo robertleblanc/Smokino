@@ -10,13 +10,12 @@ import android.bluetooth.BluetoothDevice;
 public class SmokinoApp extends Application {
     public BluetoothAdapter mBluetoothAdapter;
     public BluetoothDevice remoteDevice;
-    public BTDeviceManager btManager;
+    private BTDeviceManager btManager;
     private SmokinoGUI smokinoGUI;
-
+    private SmokinoRequester requester;
 
     @Override
     public void onCreate() {
-
 
         //Check to see that the device running this app has a bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -56,7 +55,26 @@ public class SmokinoApp extends Application {
     public void disconnect() {
         if (btManager != null) {
             btManager.disconnect();
+
+            if (requester != null)
+                requester.interrupt();
         }
+    }
+
+    public void writeToDevice(String msg) {
+        if (btManager.isConnected()) {
+            btManager.writeToDevice(msg);
+        }
+    }
+
+    public void startRequesting() {
+        requester = new SmokinoRequester(this);
+        requester.start();
+    }
+
+    public void stopRequesting() {
+        if (requester != null)
+            requester.interrupt();
     }
 
 }

@@ -37,6 +37,7 @@ public class ConnectButtonListener implements View.OnClickListener {
         //v is used to get the activity context and applicationContext
         v = _v;
 
+        //Bluetooth must be enabled and not conneted to another device already
         if (BluetoothAdapter.getDefaultAdapter().isEnabled() && !app.isConnected()) {
             buildDeviceDialog();
         }
