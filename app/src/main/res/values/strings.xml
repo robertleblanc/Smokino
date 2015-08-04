@@ -2,4 +2,5 @@
     <string name="app_name">Smokino</string>
     <string name="no_bluetooth">Failed to enable bluetooth - Please fix your crappy device</string>
     <string name="Connect_to_bluetooth">Connect</string>
+    <string name="Disconnect_from_bluetooth">Disconnect</string>
 </resources>

@@ -17,7 +17,14 @@
         <activity android:name=".SmokinoGUI">
         </activity>
 
-
+        <receiver
+            android:name="GUIBroadcastReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
     </application>
 
     <uses-permission android:name="android.permission.BLUETOOTH" />

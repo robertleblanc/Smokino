@@ -11,6 +11,7 @@ public class SmokinoApp extends Application {
     public BluetoothAdapter mBluetoothAdapter;
     public BluetoothDevice remoteDevice;
     public BTDeviceManager btManager;
+    private SmokinoGUI smokinoGUI;
 
 
     @Override
@@ -22,7 +23,17 @@ public class SmokinoApp extends Application {
         if (mBluetoothAdapter == null) {
             System.exit(0); // Device does not support Bluetooth
         }
+
+        smokinoGUI = null;
         super.onCreate();
+    }
+
+    public void setSmokinoGUI(SmokinoGUI _smokinoGUI) {
+        smokinoGUI = _smokinoGUI;
+    }
+
+    public SmokinoGUI getSmokinoGUI() {
+        return smokinoGUI;
     }
 
     //Maintains a reference to the remote device the application should connect to and
@@ -47,4 +58,5 @@ public class SmokinoApp extends Application {
             btManager.disconnect();
         }
     }
+
 }
