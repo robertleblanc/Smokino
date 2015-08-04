@@ -34,7 +34,7 @@ public class SmokinoGUI extends Activity {
         btn_disconnect = (Button) (findViewById(R.id.btn_disconnect));
 
         /* Attach Listeners */
-        btn_connect.setOnClickListener(new ConnectButtonListener());
+        btn_connect.setOnClickListener(new ConnectButtonListener((SmokinoApp) this.getApplicationContext()));
         btn_disconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -22,8 +22,14 @@ public class ConnectButtonListener implements View.OnClickListener {
     private Set<BluetoothDevice> pairedDevices;
     private ArrayList<String> deviceNameList = new ArrayList<>();
     private ArrayList<BluetoothDevice> deviceList = new ArrayList<>();
-
+    private SmokinoApp app;
     private int deviceIndex;
+
+
+    public ConnectButtonListener(SmokinoApp _app) {
+        super();
+        app = _app;
+    }
 
     @Override
     public void onClick(View _v) {
@@ -31,7 +37,7 @@ public class ConnectButtonListener implements View.OnClickListener {
         //v is used to get the activity context and applicationContext
         v = _v;
 
-        if (BluetoothAdapter.getDefaultAdapter().isEnabled()) {
+        if (BluetoothAdapter.getDefaultAdapter().isEnabled() && !app.isConnected()) {
             buildDeviceDialog();
         }
 
@@ -42,6 +48,7 @@ public class ConnectButtonListener implements View.OnClickListener {
 
 
     private void buildDeviceDialog() {
+
         //Populates the array adapter with the names of all paired bt devices
         ArrayAdapter<String> mArrayAdapter = findDevices();
 
@@ -50,16 +57,15 @@ public class ConnectButtonListener implements View.OnClickListener {
                 .setAdapter(mArrayAdapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int selected_device) {
-                        //connectToDevice(which);
 
                         //Sets the selected device for the entire application
-                        SmokinoApp app = (SmokinoApp) (v.getContext().getApplicationContext());
                         app.setRemoteDevice(deviceList.get(selected_device));
                         app.connect();
                     }
                 });
 
         builder.show();
+
     }
 
     private ArrayAdapter<String> findDevices() {

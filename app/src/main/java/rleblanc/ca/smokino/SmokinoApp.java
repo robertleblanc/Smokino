@@ -16,7 +16,7 @@ public class SmokinoApp extends Application {
 
     @Override
     public void onCreate() {
-        btManager = null;
+
 
         //Check to see that the device running this app has a bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();

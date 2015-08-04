@@ -24,40 +24,48 @@ public class BTDeviceManager {
 
 
     public BTDeviceManager(BluetoothDevice _device) {
+
         mDevice = _device;
+        mSocket = null;
     }
 
     public void connect() {
         //ToDo: Change this function so that it is asychronous
-        //Create the socket first
-        try {
-            //mSocket = mDevice.createRfcomSocketToServiceRecord(mUUID);
-            mSocket = mDevice.createInsecureRfcommSocketToServiceRecord(mUUID);
-        } catch (IOException e) {
-            Log.e(TAG, "Error creating Socket in connect()");
-            return;
-        }
+        //Only try to connect if there is currently no connection
+        if (mSocket == null) {
 
-        try {
-            // Connect the device through the socket. This will block
-            // until it succeeds or throws an exception
+            //Create the socket first
+            try {
+                //mSocket = mDevice.createRfcomSocketToServiceRecord(mUUID);
+                mSocket = mDevice.createInsecureRfcommSocketToServiceRecord(mUUID);
+            } catch (IOException e) {
+                Log.e(TAG, "Error creating Socket in connect()");
+                disconnect();
+                return;
+            }
 
-            //As recommended by android API cancel discovery before making a connection
-            BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
-            mSocket.connect();
+            try {
+                // Connect the device through the socket. This will block
+                // until it succeeds or throws an exception
 
-        } catch (IOException connectException) {
-            // Unable to connect; close the socket and get out
-            Log.e(TAG, "Error connecting through socket in connect()");
-            disconnect();
-            return;
-        }
-        //Get Streams
-        try {
-            mInStream = mSocket.getInputStream();
-            mOutStream = mSocket.getOutputStream();
-        } catch (IOException e) {
-            Log.e(TAG, "Error getting outputstream or inputstream in connect()");
+                //As recommended by android API cancel discovery before making a connection
+                BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+                mSocket.connect();
+
+            } catch (IOException connectException) {
+                // Unable to connect; close the socket and get out
+                Log.e(TAG, "Error connecting through socket in connect()");
+                disconnect();
+                return;
+            }
+            //Get Streams
+            try {
+                mInStream = mSocket.getInputStream();
+                mOutStream = mSocket.getOutputStream();
+            } catch (IOException e) {
+                Log.e(TAG, "Error getting outputstream or inputstream in connect()");
+                disconnect();
+            }
         }
     }
 
