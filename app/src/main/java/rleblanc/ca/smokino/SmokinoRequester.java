@@ -1,5 +1,6 @@
 package rleblanc.ca.smokino;
 
+import android.content.Intent;
 import android.util.Log;
 
 /**

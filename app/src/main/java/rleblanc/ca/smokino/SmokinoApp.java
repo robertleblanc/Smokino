@@ -13,6 +13,7 @@ public class SmokinoApp extends Application {
     private BTDeviceManager btManager;
     private SmokinoGUI smokinoGUI;
     private SmokinoRequester requester;
+    private SmokinoUpdater updater;
 
     @Override
     public void onCreate() {
@@ -53,12 +54,13 @@ public class SmokinoApp extends Application {
     }
 
     public void disconnect() {
+        this.stopRequesting();
+
         if (btManager != null) {
             btManager.disconnect();
 
-            if (requester != null)
-                requester.interrupt();
         }
+
     }
 
     public void writeToDevice(String msg) {
@@ -69,12 +71,30 @@ public class SmokinoApp extends Application {
 
     public void startRequesting() {
         requester = new SmokinoRequester(this);
+        updater = new SmokinoUpdater(this);
+
         requester.start();
+        updater.start();
     }
 
     public void stopRequesting() {
-        if (requester != null)
+        if (requester != null) {
             requester.interrupt();
+            //requester = null;
+        }
+
+        if (updater != null) {
+            updater.interrupt();
+            //updater = null;
+        }
+    }
+
+    public int available() {
+        return btManager.available();
+    }
+
+    public int read(byte[] _byte) {
+        return btManager.read(_byte);
     }
 
 }

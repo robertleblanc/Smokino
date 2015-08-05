@@ -3,10 +3,13 @@ package rleblanc.ca.smokino;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -18,6 +21,17 @@ public class SmokinoGUI extends Activity {
     /* Views */
     private Button btn_connect;
     private Button btn_disconnect;
+    private TextView tv_tickTock;
+
+    private BroadcastReceiver dataReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("TICK")) {
+                String extra = intent.getStringExtra("Data");
+                tv_tickTock.setText(extra);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +46,8 @@ public class SmokinoGUI extends Activity {
         /* Views */
         btn_connect = (Button) (findViewById(R.id.btn_connect));
         btn_disconnect = (Button) (findViewById(R.id.btn_disconnect));
+        tv_tickTock = (TextView) (findViewById(R.id.textView));
+
 
         /* Attach Listeners */
         btn_connect.setOnClickListener(new ConnectButtonListener((SmokinoApp) this.getApplicationContext()));
@@ -56,6 +72,8 @@ public class SmokinoGUI extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver(dataReceiver, new IntentFilter("TICK"));
+        registerReceiver(dataReceiver, new IntentFilter("TOCK"));
     }
 
     public void indicateBTConnection() {

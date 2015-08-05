@@ -115,7 +115,7 @@ public class BTDeviceManager {
         try {
             return mInStream.available();
         } catch (IOException e) {
-            Log.e(TAG, "Error getting available bytes from inputstream in available()");
+            Log.e(TAG, "Error getting available bytes from inputstream in available() - Most likely the connection has been lost");
             return 0;
         }
 
