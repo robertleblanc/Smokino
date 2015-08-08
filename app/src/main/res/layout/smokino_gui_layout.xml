@@ -6,11 +6,29 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <Button
-        android:id="@+id/btn_connect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Connect_to_bluetooth" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_connect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Connect_to_bluetooth" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="-"
+            android:id="@+id/tv_status"
+            android:gravity="right"
+            android:enabled="true"
+            android:visibility="visible"
+            android:textColor="@android:color/holo_red_dark" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_disconnect"
@@ -18,13 +36,99 @@
         android:layout_height="wrap_content"
         android:text="@string/Disconnect_from_bluetooth" />
 
-    <TextView
-        android:layout_width="324dp"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PID On"
+            android:id="@+id/btn_pid_on" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PID Off"
+            android:id="@+id/btn_pid_off" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Current Temp: "
+            android:id="@+id/lbl_temperature"
+            android:enabled="true"
+            android:visibility="visible"
+            android:padding="8dp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="-"
+            android:id="@+id/tv_temperature"
+            android:gravity="right"
+            android:textColor="@android:color/holo_green_dark" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Target Temp: "
+            android:id="@+id/lbl_target_temperature"
+            android:enabled="true"
+            android:visibility="visible"
+            android:padding="8dp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="-"
+            android:id="@+id/tv_target_temperature"
+            android:gravity="right"
+            android:textColor="@android:color/holo_red_dark" />
+    </LinearLayout>
+
+
+    <SeekBar
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/textView"
-        android:layout_weight="0.17" />
+        android:id="@+id/sb_fanThrottle"
+        android:padding="24dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_set_target_temperature"
+            android:layout_weight="0.73" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Target"
+            android:id="@+id/btn_set_target_temperature" />
+    </LinearLayout>
 
 
 </LinearLayout>

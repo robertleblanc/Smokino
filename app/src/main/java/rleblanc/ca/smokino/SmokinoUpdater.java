@@ -46,7 +46,7 @@ public class SmokinoUpdater extends Thread {
                         try {
                             final String data = new String(encodedBytes, "US-ASCII");
                             readBufferPosition = 0;
-                            Intent intent = new Intent("TICK");
+                            Intent intent = new Intent("UPDATE");
                             intent.putExtra("Data", data);
                             app.sendBroadcast(intent);
 

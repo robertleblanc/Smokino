@@ -9,6 +9,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,17 +23,17 @@ public class SmokinoGUI extends Activity {
     /* Views */
     private Button btn_connect;
     private Button btn_disconnect;
-    private TextView tv_tickTock;
+    public TextView tv_status;
+    public Button btn_pid_on;
+    public Button btn_pid_off;
+    public Button btn_set_target_temperature;
+    public TextView tv_temperature;
+    public TextView tv_target_temperature;
+    public SeekBar sb_fanThrottle;
+    public EditText et_set_target_temperature;
 
-    private BroadcastReceiver dataReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals("TICK")) {
-                String extra = intent.getStringExtra("Data");
-                tv_tickTock.setText(extra);
-            }
-        }
-    };
+    //public SmokinoApp app = ((SmokinoApp) (getApplicationContext()));
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,18 @@ public class SmokinoGUI extends Activity {
         /* Views */
         btn_connect = (Button) (findViewById(R.id.btn_connect));
         btn_disconnect = (Button) (findViewById(R.id.btn_disconnect));
-        tv_tickTock = (TextView) (findViewById(R.id.textView));
+        btn_pid_off = (Button) (findViewById(R.id.btn_pid_off));
+        btn_pid_on = (Button) (findViewById(R.id.btn_pid_on));
+        btn_set_target_temperature = (Button) (findViewById(R.id.btn_set_target_temperature));
+
+        tv_status = (TextView) (findViewById(R.id.tv_status));
+
+        tv_temperature = (TextView) (findViewById(R.id.tv_temperature));
+        tv_target_temperature = (TextView) (findViewById(R.id.tv_target_temperature));
+
+        et_set_target_temperature = (EditText) (findViewById(R.id.et_set_target_temperature));
+
+        sb_fanThrottle = (SeekBar) findViewById(R.id.sb_fanThrottle);
 
 
         /* Attach Listeners */
@@ -57,11 +70,65 @@ public class SmokinoGUI extends Activity {
                 ((SmokinoApp) getApplicationContext()).disconnect();
             }
         });
+
+        sb_fanThrottle.setMax(100);
+        sb_fanThrottle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            int progress = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                progress = progresValue;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                ((SmokinoApp) getApplicationContext()).writeToDevice("fan" + progress + "\n");
+            }
+        });
+
+        btn_pid_on.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((SmokinoApp) getApplicationContext()).writeToDevice("pidon\n");
+                ((SmokinoApp) getApplicationContext()).writeToDevice("kpv5\n");
+                ((SmokinoApp) getApplicationContext()).writeToDevice("kiv5\n");
+                ((SmokinoApp) getApplicationContext()).writeToDevice("kdv5\n");
+            }
+        });
+
+        btn_pid_off.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((SmokinoApp) getApplicationContext()).writeToDevice("pidoff\n");
+            }
+        });
+
+        btn_set_target_temperature.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String set_temp_string = et_set_target_temperature.getText().toString();
+                    int kelvin = Integer.parseInt(set_temp_string) + 273;
+                    ((SmokinoApp) getApplicationContext()).writeToDevice("set" + kelvin);
+                } catch (Exception e) {
+                    et_set_target_temperature.setText("Error getting temperature - Try again");
+                }
+            }
+        });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //app.stopRequesting();
+        //((SmokinoApp) (getApplicationContext())).disconnect();
+        ((SmokinoApp) (getApplicationContext())).setSmokinoGUI(null);
+
     }
 
     @Override
@@ -72,8 +139,6 @@ public class SmokinoGUI extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(dataReceiver, new IntentFilter("TICK"));
-        registerReceiver(dataReceiver, new IntentFilter("TOCK"));
     }
 
     public void indicateBTConnection() {
